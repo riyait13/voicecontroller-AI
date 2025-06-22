@@ -5,11 +5,10 @@ import webbrowser
 import datetime
 import pyjokes
 
-# Initialize recognizer and speech engine
+# initialize recognizer and speech engine
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 
-# Set voice (female = 1, male = 0)
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
 
@@ -39,33 +38,33 @@ def run_ai():
     command = take_command()
 
     if 'youtube' in command:
-        talk("Opening YouTube 🎬")
+        talk("Opening YouTube ")
         webbrowser.open("https://www.youtube.com")
 
     elif 'open google' in command:
-        talk("Opening Google 🌐")
+        talk("Opening Google ")
         webbrowser.open("https://www.google.com")
 
     elif 'search' in command:
         search_query = command.replace('search', '').strip()
-        talk(f"Searching for {search_query} 🔍")
+        talk(f"Searching for {search_query} ")
         webbrowser.open(f"https://www.google.com/search?q={search_query}")
 
     elif 'play' in command:
         song = command.replace('play', '').strip()
-        talk(f'Playing {song} 🎶')
+        talk(f'Playing {song} ')
         pywhatkit.playonyt(song)
 
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
-        talk(f"The current time is {time} 🕒")
+        talk(f"The current time is {time} ")
 
     elif 'instagram' in command:
         talk("Opening Instagram 📸")
         webbrowser.open("https://www.instagram.com")
 
     elif 'github' in command or 'git hub' in command:
-        talk("Opening GitHub 💻")
+        talk("Opening GitHub ")
         webbrowser.open("https://github.com")
 
     elif 'joke' in command:
@@ -82,7 +81,7 @@ def run_ai():
 
     return True  # Continue listening
 
-# MAIN LOOP
+# main loop
 talk("Say 'hello assistant' to wake me up 🔊")
 while True:
     wake_command = take_command()
