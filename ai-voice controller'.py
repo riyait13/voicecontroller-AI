@@ -2,35 +2,41 @@ import speech_recognition as sr
 import pyttsx3
 import pywhatkit
 import webbrowser
+import datetime
+import pyjokes
 
-# Initialize the recognizer and speech engine
+# Initialize recognizer and speech engine
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 
-# Set voice to female/male (optional)
+# Set voice (female = 1, male = 0)
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)  # 0 = male, 1 = female
-
+engine.setProperty('voice', voices[1].id)
 
 def talk(text):
+    print("Assistant:", text)
     engine.say(text)
     engine.runAndWait()
 
 def take_command():
     try:
         with sr.Microphone() as source:
-            print("Listening... 🎧")
+            print("Listening...")
+            listener.adjust_for_ambient_noise(source)
             voice = listener.listen(source)
             command = listener.recognize_google(voice)
             command = command.lower()
-            print("You said: " + command)
+            print("You said:", command)
             return command
-    except:
+    except Exception as e:
+        print("Error:", e)
         return ""
+
+def wake_word_detected(command):
+    return 'assistant' in command or 'buddy' in command
 
 def run_ai():
     command = take_command()
-    print(f"DEBUG: Recognized command: {command}")
 
     if 'youtube' in command:
         talk("Opening YouTube 🎬")
@@ -40,26 +46,53 @@ def run_ai():
         talk("Opening Google 🌐")
         webbrowser.open("https://www.google.com")
 
+    elif 'search' in command:
+        search_query = command.replace('search', '').strip()
+        talk(f"Searching for {search_query} 🔍")
+        webbrowser.open(f"https://www.google.com/search?q={search_query}")
+
     elif 'play' in command:
-        song = command.replace('play', '')
+        song = command.replace('play', '').strip()
         talk(f'Playing {song} 🎶')
         pywhatkit.playonyt(song)
-    
-    elif 'git hub' in command:
-        talk("Opening GitHub 💻")
-        webbrowser.open("https://github.com")
+
+    elif 'time' in command:
+        time = datetime.datetime.now().strftime('%I:%M %p')
+        talk(f"The current time is {time} 🕒")
 
     elif 'instagram' in command:
         talk("Opening Instagram 📸")
         webbrowser.open("https://www.instagram.com")
 
+    elif 'github' in command or 'git hub' in command:
+        talk("Opening GitHub 💻")
+        webbrowser.open("https://github.com")
+
+    elif 'joke' in command:
+        joke = pyjokes.get_joke()
+        talk(joke)
+
+    elif 'exit' in command or 'stop' in command:
+        talk("Okay byeee !")
+        return False
+
     else:
-        talk("Sorry, i can't understand that command!! kuki aapke mummy ki aawaj aarhi hai ")
+        talk("Sorry, I didn't get that.")
         return False  # Stop if not understood
 
-    return True  # Continue if a command was recognized
+    return True  # Continue listening
 
-# Run until an unknown command is given
+# MAIN LOOP
+talk("Say 'hello assistant' to wake me up 🔊")
 while True:
-    if not run_ai():
-        break
+    wake_command = take_command()
+    print(f"DEBUG: Wake command recognized: '{wake_command}'")
+    if not wake_command:
+        talk("I didn't hear anything. Please try again.")
+        continue
+    if wake_word_detected(wake_command):
+        talk("Yes, I'm here. Tell me what to do ")
+        if not run_ai():
+            break
+
+print(sr.Microphone.list_microphone_names())
