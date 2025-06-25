@@ -5,11 +5,10 @@ import webbrowser
 import datetime
 import pyjokes
 
-# Initialize recognizer and speech engine
+# initialize recognizer and speech engine
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 
-# Set voice (female = 1, male = 0)
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
 
@@ -39,16 +38,16 @@ def run_ai():
     command = take_command()
 
     if 'youtube' in command:
-        talk("Opening YouTube 🎬")
+        talk("Opening YouTube ")
         webbrowser.open("https://www.youtube.com")
 
     elif 'open google' in command:
-        talk("Opening Google 🌐")
+        talk("Opening Google ")
         webbrowser.open("https://www.google.com")
 
     elif 'search' in command:
         search_query = command.replace('search', '').strip()
-        talk(f"Searching for {search_query} 🔍")
+        talk(f"Searching for {search_query} ")
         webbrowser.open(f"https://www.google.com/search?q={search_query}")
 
     elif 'play' in command:
@@ -61,11 +60,11 @@ def run_ai():
         talk(f"The current time is {time} 🕒")
 
     elif 'instagram' in command:
-        talk("Opening Instagram 📸")
+        talk("Opening Instagram ")
         webbrowser.open("https://www.instagram.com")
 
     elif 'github' in command or 'git hub' in command:
-        talk("Opening GitHub 💻")
+        talk("Opening GitHub ")
         webbrowser.open("https://github.com")
 
     elif 'joke' in command:
@@ -78,12 +77,12 @@ def run_ai():
 
     else:
         talk("Sorry, I didn't get that.")
-        return False  # Stop if not understood
+        return False  # Stop if not understood the commond or voice !!
 
-    return True  # Continue listening
+    return True  # Continue listening if command is understandable
 
-# MAIN LOOP
-talk("Say 'hello assistant' to wake me up 🔊")
+# main loop 
+talk("Say 'hello assistant' to wake me up ")
 while True:
     wake_command = take_command()
     print(f"DEBUG: Wake command recognized: '{wake_command}'")
