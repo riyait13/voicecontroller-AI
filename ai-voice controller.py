@@ -52,12 +52,12 @@ def run_ai():
 
     elif 'play' in command:
         song = command.replace('play', '').strip()
-        talk(f'Playing {song} 🎶')
+        talk(f'Playing {song} ')
         pywhatkit.playonyt(song)
 
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
-        talk(f"The current time is {time} 🕒")
+        talk(f"The current time is {time} ")
 
     elif 'instagram' in command:
         talk("Opening Instagram ")
@@ -81,8 +81,8 @@ def run_ai():
 
     return True  # Continue listening if command is understandable
 
-# main loop 
-talk("Say 'hello assistant' to wake me up ")
+# MAIN LOOP
+talk("Say 'hello assistant' to wake me up 🔊")
 while True:
     wake_command = take_command()
     print(f"DEBUG: Wake command recognized: '{wake_command}'")
